@@ -42,6 +42,7 @@ class Requester:
             raise self.__create_exception(status, response_headers, output)
         return response_headers, output
 
+
     def __create_exception(self, status, output):
         if status == 403:
             cls = exceptions.BadRequestException
