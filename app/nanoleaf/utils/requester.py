@@ -34,14 +34,13 @@ class Requester:
             print(e)
             return
         output = None if r.text == "" else r.json()
-        self.__check(status=r.status_code, response_headers=r.headers, output=output)
+        self.__check(status=r.status_code, output=output)
         return output
 
-    def __check(self, status, response_headers, output):
+    def __check(self, status, output):
         if status >= 400:
-            raise self.__create_exception(status, response_headers, output)
-        return response_headers, output
-
+            raise self.__create_exception(status, output)
+        return output
 
     def __create_exception(self, status, output):
         if status == 403:
@@ -56,4 +55,3 @@ class Requester:
             cls = exceptions.InternalServerError
 
         return cls(status, output)
-

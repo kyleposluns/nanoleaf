@@ -2,6 +2,7 @@ import colorsys
 import re
 
 from app.nanoleaf.model import AuroraObject
+from app.nanoleaf.exceptions import BadRequestException
 
 
 class State(AuroraObject):
