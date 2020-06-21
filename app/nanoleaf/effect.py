@@ -1,5 +1,6 @@
-from app.nanoleaf import AuroraObject
+from app.nanoleaf.model import AuroraObject
 import socket
+import random
 
 
 class AuroraStream:
@@ -37,18 +38,18 @@ class Effect(AuroraObject):
     @property
     def effect(self):
         """Returns the active effect"""
-        return self.requester.request(method="GET", endpoint="effects/select")
+        return self.__requester.request(method="GET", endpoint="effects/select")
 
     @effect.setter
     def effect(self, effect_name: str):
         """Sets the active effect to the name specified"""
         data = {"select": effect_name}
-        self.requester.request(method="PUT", endpoint="effects", data=data)
+        self.__requester.request(method="PUT", endpoint="effects", data=data)
 
     @property
     def effects_list(self):
         """Returns a list of all effects stored on the device"""
-        return self.requester.request(method="GET", endpoint="effects/effectsList")
+        return self.__requester.request(method="GET", endpoint="effects/effectsList")
 
     def effect_random(self) -> str:
         """Sets the active effect to a new random effect stored on the device.
@@ -67,36 +68,36 @@ class Effect(AuroraObject):
 
         The dict given must match the json structure specified in the API docs."""
         data = {"write": effect_data}
-        self.requester.request(method="PUT", endpoint="effects", data=data)
+        self.__requester.request(method="PUT", endpoint="effects", data=data)
 
     def effect_details(self, name: str) -> dict:
         """Returns the dict containing details for the effect specified"""
         data = {"write": {"command": "request",
                           "animName": name}}
-        return self.requester.request(method="PUT", endpoint="effects", data=data)
+        return self.__requester.request(method="PUT", endpoint="effects", data=data)
 
     def effect_details_all(self) -> dict:
         """Returns a dict containing details for all effects on the device"""
         data = {"write": {"command": "requestAll"}}
-        return self.requester.request(method="PUT", endpoint="effects", data=data)
+        return self.__requester.request(method="PUT", endpoint="effects", data=data)
 
     def effect_delete(self, name: str):
         """Removed the specified effect from the device"""
         data = {"write": {"command": "delete",
                           "animName": name}}
-        self.requester.request(method="PUT", endpoint="effects", data=data)
+        self.__requester.request(method="PUT", endpoint="effects", data=data)
 
     def effect_rename(self, old_name: str, new_name: str):
         """Renames the specified effect saved on the device to a new name"""
         data = {"write": {"command": "rename",
                           "animName": old_name,
                           "newName": new_name}}
-        self.requester.request(method="PUT", endpoint="effects", data=data)
+        self.__requester.request(method="PUT", endpoint="effects", data=data)
 
     def effect_stream(self):
         """Open an external control stream"""
         data = {"write": {"command": "display",
                           "animType": "extControl"}}
 
-        udp_info = self.requester.request(method="PUT", endpoint="effects", data=data)
+        udp_info = self.__requester.request(method="PUT", endpoint="effects", data=data)
         return AuroraStream(udp_info["streamControlIpAddr"], udp_info["streamControlPort"])

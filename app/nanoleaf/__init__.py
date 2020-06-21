@@ -1,6 +1,5 @@
-from .aurora import Aurora, AuroraObject
-from .state import State
-from .requester import Requester
-from .layout import PanelLayout
-from .effect import Effect
-from .rhythm import Rhythm
+from dotenv import load_dotenv
+from pathlib import Path
+from app.nanoleaf.aurora import Aurora
+
+load_dotenv(dotenv_path=Path("../../") / ".env")
