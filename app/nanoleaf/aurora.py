@@ -2,20 +2,23 @@ import requests
 import random
 import colorsys
 import re
+import os
+
 
 # Primary interface for an Aurora light
 # For instructions or bug reports, please visit
 # https://github.com/software-2/nanoleaf
 
 
-class Aurora(object):
+class Aurora:
+
     def __init__(self, ip_address: str, auth_token: str):
-        self.baseUrl = "http://" + ip_address + ":16021/api/v1/" + auth_token + "/"
+        self.baseUrl = f"http://{ip_address}:16021/api/v1/{auth_token}/"
         self.ip_address = ip_address
         self.auth_token = auth_token
 
     def __repr__(self):
-        return "<Aurora(" + self.ip_address + ")>"
+        return f"<Aurora({self.ip_address})>"
 
     def __put(self, endpoint, data: dict) -> requests.request:
         url = self.baseUrl + endpoint
@@ -52,18 +55,18 @@ class Aurora(object):
         elif r.status_code == 204:
             return None
         elif r.status_code == 403:
-            print("Error 400: Bad request! (" + self.ip_address + ")")
+            print(f"Error 400: Bad request! ({self.ip_address})")
         elif r.status_code == 401:
-            print("Error 401: Not authorized! This is an invalid token for this Aurora (" + self.ip_address + ")")
+            print(f"Error 401: Not authorized! This is an invalid token for this Aurora ({self.ip_address})")
         elif r.status_code == 404:
-            print("Error 404: Resource not found! (" + self.ip_address + ")")
+            print(f"Error 404: Resource not found! ({self.ip_address})")
         elif r.status_code == 422:
-            print("Error 422: Unprocessible Entity (" + self.ip_address + ")")
+            print(f"Error 422: Unprocessable Entity ({self.ip_address})")
         elif r.status_code == 500:
-            print("Error 500: Internal Server Error (" + self.ip_address + ")")
+            print(f"Error 500: Internal Server Error ({self.ip_address})")
         else:
-            print("ERROR! UNKNOWN ERROR " + str(r.status_code)
-                  + ". Please post an issue on the GitHub page: https://github.com/software-2/nanoleaf/issues")
+            print(f"ERROR! UNKNOWN ERROR {str(r.status_code)}. "
+                  "Please post an issue on the GitHub page: https://github.com/software-2/nanoleaf/issues")
         return None
 
     ###########################################
