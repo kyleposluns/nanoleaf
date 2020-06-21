@@ -22,9 +22,9 @@ class Aurora(AuroraObject):
     def __init__(self, ip_address: str = None, auth_token: str = None):
         super().__init__(Requester(ip_address, auth_token))
         self.state = State(self.requester)
-        self.panel_layout = PanelLayout(self.requester)
         self.effect = Effect(self.requester)
         self.rhythm = Rhythm(self.requester)
+        self.panel_layout = PanelLayout(self.requester, self.rhythm)
 
     def __repr__(self):
         return f"<Aurora({self.requester.ip_address})>"

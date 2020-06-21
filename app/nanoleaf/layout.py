@@ -3,8 +3,9 @@ from app.nanoleaf import AuroraObject
 
 class PanelLayout(AuroraObject):
 
-    def __init__(self, requester):
+    def __init__(self, requester, rhythm):
         super().__init__(requester)
+        self.rhythm = rhythm
 
     @property
     def orientation(self):
@@ -25,7 +26,7 @@ class PanelLayout(AuroraObject):
     def panel_count(self):
         """Returns the number of panels connected to the device"""
         count = int(self.requester.request(method="GET", endpoint="panelLayout/layout/numPanels"))
-        if self.rhythm_connected:
+        if self.rhythm.rhythm_connected:
             count -= 1
         return count
 
