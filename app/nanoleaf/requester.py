@@ -15,19 +15,19 @@ class Requester:
             auth_token = os.getenv("NANOLEAF_AUTH_TOKEN")
 
         self.base_url = f"http://{ip_address}:16021/api/v1/{auth_token}/"
-        self.ip_address = ip_address
+        self.__ip_address = ip_address
         self.auth_token = auth_token
 
     @property
     def ip_address(self):
-        return self.ip_address
+        return self.__ip_address
 
     @ip_address.setter
     def ip_address(self, value):
-        self.ip_address = value
+        self.__ip_address = value
 
     def request(self, method: str, endpoint: str = "", data: dict = None):
-        url = self.baseUrl + endpoint
+        url = self.base_url + endpoint
         try:
             r = requests.request(method=method, url=url, json=data)
         except requests.exceptions.RequestException as e:
